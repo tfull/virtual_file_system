@@ -1,0 +1,11 @@
+require "./VirtualFileSystem"
+vfs = VirtualFileSystem.new
+vfs.touch("a.txt")
+vfs.write_line("a.txt", ["hello", "world"])
+vfs.mkdir("work")
+vfs.cd("work")
+vfs.touch("b.txt")
+vfs.write_line("b.txt", ["this", "is", "work", "directory"])
+vfs.cat(["../a.txt", "b.txt"])
+vfs.pwd
+
