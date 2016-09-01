@@ -80,7 +80,7 @@ class VirtualFileSystem
 
   def trace(path)
     current = @current.clone
-    xs = path.split(/(.*\/)/).select{ |s| ! s.empty? }
+    xs = path.split(/(.*?\/)/).select{ |s| ! s.empty? }
     if xs.length == 0
       nil
     else
