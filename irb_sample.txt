@@ -9,3 +9,12 @@ vfs.write_line("b.txt", ["this", "is", "work", "directory"])
 vfs.cat(["../a.txt", "b.txt"])
 vfs.pwd
 
+require "./PseudoFileSystem"
+pfs = PseudoFileSystem.new(".")
+pfs.touch("top.txt")
+pfs.mkdir("dir")
+pfs.cd("dir")
+pfs.pwd
+pfs.touch("leaf.txt")
+pfs.ls
+pfs.ls("..")

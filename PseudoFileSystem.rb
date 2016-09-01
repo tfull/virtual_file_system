@@ -11,9 +11,11 @@ class PseudoFileSystem
     if xs.length == 0
       nil
     else
-      if xs[0] == "/"
+      if xs[0] == "~/"
         current = [@home]
         xs.shift
+      else xs[0] == "/"
+        return nil
       end
       for i in 0...(xs.length - 1)
         name = xs[i].chomp("/")
