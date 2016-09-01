@@ -1,5 +1,3 @@
-# coding: utf-8
-
 class VirtualFile
   attr_reader :name
 
