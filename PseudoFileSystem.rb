@@ -97,4 +97,37 @@ class PseudoFileSystem
     `touch #{dir.join("/")}/#{name}`
     $?.exitstatus == 0
   end
+
+  def write_line(path, args)
+    tmp = trace(path)
+    return false if tmp == nil
+    dir, name = tmp
+    `echo #{args.join(" ")} >> #{dir.join("/")}/#{name}`
+    $?.exitstatus == 0
+  end
+
+  def rm(path)
+    tmp = trace(path)
+    return false tmp == nil
+    dir, name = tmp
+    `rm #{dir.join("/")}/#{name}`
+    $?.exitstatus == 0
+  end
+
+  def wc(path)
+    tmp = trace(path)
+    return false tmp == nil
+    dir, name = tmp
+    result = `wc #{dir.join("/")}/#{name}`
+    stat = ($?.exitstatus == 0)
+    if stat then result else nil end
+  end
+
+  def view(inst, path)
+    tmp = trace(path)
+    return false tmp == nil
+    dir, name = tmp
+    result = `sed -n #{inst}p #{dir.join("/")}/#{name}`
+    stat = ($?.exitstatus == 0)
+    if stat then result else nil end
 end
