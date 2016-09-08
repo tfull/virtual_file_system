@@ -18,3 +18,7 @@ pfs.pwd
 pfs.touch("leaf.txt")
 pfs.ls
 pfs.ls("..")
+pfs.write_line("leaf.txt", ["Hello", "World"])
+pfs.view("1,2", "leaf.txt")
+pfs.cut("1", "leaf.txt")
+pfs.wc("leaf.txt")

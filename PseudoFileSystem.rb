@@ -9,12 +9,14 @@ class PseudoFileSystem
     current = @current.clone
     xs = path.split(/(.*?\/)/).select{ |s| !s.empty? }
     if xs.length == 0
+      puts 1
       nil
     else
       if xs[0] == "~/"
         current = [@home]
         xs.shift
-      else xs[0] == "/"
+      elsif xs[0] == "/"
+        puts 2
         return nil
       end
       for i in 0...(xs.length - 1)
@@ -24,6 +26,7 @@ class PseudoFileSystem
           if current.length > 1
             current.pop
           else
+            puts 3
             return nil
           end
         else
@@ -94,6 +97,7 @@ class PseudoFileSystem
     tmp = trace(path)
     return false if tmp == nil
     dir, name = tmp
+    puts "#{dir.join("/")}/#{name}"
     `touch #{dir.join("/")}/#{name}`
     $?.exitstatus == 0
   end
@@ -108,7 +112,7 @@ class PseudoFileSystem
 
   def rm(path)
     tmp = trace(path)
-    return false tmp == nil
+    return false if tmp == nil
     dir, name = tmp
     `rm #{dir.join("/")}/#{name}`
     $?.exitstatus == 0
@@ -116,18 +120,27 @@ class PseudoFileSystem
 
   def wc(path)
     tmp = trace(path)
-    return false tmp == nil
+    return false if tmp == nil
     dir, name = tmp
     result = `wc #{dir.join("/")}/#{name}`
     stat = ($?.exitstatus == 0)
-    if stat then result else nil end
+    if stat then result.split[0..2].map{ |x| x.to_i } else nil end
   end
 
   def view(inst, path)
     tmp = trace(path)
-    return false tmp == nil
+    return false if tmp == nil
     dir, name = tmp
-    result = `sed -n #{inst}p #{dir.join("/")}/#{name}`
+    result = `sed -n "#{inst}p" #{dir.join("/")}/#{name}`
     stat = ($?.exitstatus == 0)
     if stat then result else nil end
+  end
+
+  def cut(inst, path)
+    tmp = trace(path)
+    return false if tmp == nil
+    dir, name = tmp
+    `sed -e "#{inst}d" #{dir.join("/")}/#{name}`
+    $?.exitstatus == 0
+  end
 end
